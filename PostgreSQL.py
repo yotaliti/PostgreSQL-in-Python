@@ -103,11 +103,12 @@ with (conn.cursor() as cur):
         print(cursor.fetchall())
 
 
-    def del_phone_number(cursor, id_client):
+    def del_phone_number(cursor, id_client, number):
         cursor.execute("""
         DELETE FROM phone_number
-        WHERE client_id = %s;
-        """, (id_client,))
+        WHERE client_id = %s
+        AND number = %s;
+        """, (id_client, number))
         cursor.execute("""
         SELECT * FROM phone_number;
         """)
@@ -167,13 +168,12 @@ with (conn.cursor() as cur):
 
     add_phone_number(cur, 1, '888888888888')
     add_phone_number(cur, 2, '111111111111')
-    add_phone_number(cur, 2, '111111111111')
 
     she_wife = ('Sara', 'Lytaeva', 'wife@gmail.com', '222222222222')
     change_data(cur, 2, she_wife)
 
     add_phone_number(cur, 2, '111111111111')
-    del_phone_number(cur, 2)
+    del_phone_number(cur, 2, '222222222222')
     add_phone_number(cur, 2, '111111111111')
 
     client1 = ('Sara', 'Lytaeva', 'wife@gmail.com')
